@@ -1,5 +1,4 @@
 from parse_func import car_plates_parser, get_vincode
-import requests as r
 import re
 
 
@@ -53,5 +52,7 @@ async def creat_info(num: str):
     car = [year, model, registration, things, adres, img, vincode]
 
     return car
+
+
 
 

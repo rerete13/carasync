@@ -5,6 +5,10 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 
 
 
+def back():
+    return types.InlineKeyboardButton(text='Назад ⭕️', callback_data='back')
+
+
 def inline_keyboard_url(text:str, link:str):
     btn = InlineKeyboardBuilder()
     btn.row(types.InlineKeyboardButton(text=text, url=link))
@@ -27,6 +31,7 @@ def menu_keyboard_btn():
     btns = ReplyKeyboardMarkup(keyboard=btns)
     
     return btns
+
 
 
 def inline_user_subscribe_start():
@@ -54,8 +59,19 @@ def inline_menu_btn():
     btn.row(types.InlineKeyboardButton(text='🛠 Автосервіси', callback_data='repairs'))
     btn.row(types.InlineKeyboardButton(text='🔬 INFO', callback_data='info'))
     btn.row(types.InlineKeyboardButton(text='🍫 Власник', callback_data='owner'))
-    btn.row(types.InlineKeyboardButton(text='🗣 Відгуки', callback_data='respon'))
+    btn.row(types.InlineKeyboardButton(text='🗣 Відгуки', callback_data='respons_3'))
     btn.row(types.InlineKeyboardButton(text='👤 Акаунт', callback_data='account'))
 
     return btn.as_markup()
+
+
+
+
+def more_response_btn():
+    btn = InlineKeyboardBuilder()
+    btn.row(types.InlineKeyboardButton(text='🗣 Більше відгуків', callback_data='respons_9'))
+    btn.row(back())
+
+    return btn.as_markup()
+
 

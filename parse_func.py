@@ -1,7 +1,7 @@
 import requests as r
 from bs4 import BeautifulSoup as bs
 import fake_useragent as fu
-
+import aiohttp
 
 async def parser(link:str):
     headers = {'User-Agent': fu.FakeUserAgent().random}
@@ -11,6 +11,16 @@ async def parser(link:str):
     html = bs(req.content, 'lxml')
 
     return html
+
+
+
+async def parser_io(url):
+    headers = {'User-Agent': fu.FakeUserAgent().random}
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            html = await response.text()
+            soup = bs(html, 'lxml', headers=headers)
+            return soup
 
 
 

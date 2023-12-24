@@ -1,3 +1,5 @@
 /venv
 /tokens.py
 /user-data
+/__pycache__
+
