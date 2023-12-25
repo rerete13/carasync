@@ -3,9 +3,9 @@ from aiogram.filters import CommandStart, Command
 from aiogram.types import Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot_func import is_user_subscribed
-from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn
+from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
 from data_func import create_user_data
-from another_info import all_comments
+from another_info import all_comments, top_cars_sales
 
 router = Router()
 
@@ -50,6 +50,58 @@ async def callbacks_num(callback: types.CallbackQuery):
             
         await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=out, reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
 
+
+
+@router.callback_query(F.data.startswith("top_car_"))
+async def callbacks_num(callback: types.CallbackQuery):
+    action = callback.data.split("_")[2]
+
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
+    
+    if action == "10":
+        out = ''
+        info = (await top_cars_sales())
+        for i in range(10):
+            out += info[i] + '\n'
+
+        out += '\n\n Інформація надана від: @autoparse_bot'
+            
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=out, reply_markup=top_car_btn())
+
+        
+    if action == "50":
+        out = ''
+        info = (await top_cars_sales())
+        for i in range(50):
+            out += info[i] + '\n'
+
+        out += '\n\n Інформація надана від: @autoparse_bot'
+            
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=out, reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+
+
+
+@router.callback_query(F.data == 'repairs')
+async def callback_return(callback: types.callback_query):
+    await callback.message.answer('Виберіть місто', reply_markup= (await city_repaire_choose_btn()))
+    
+
+
+
+'city_kyiv'
+'city_kyivob'
+'city_vinnycia'
+'city_dnipro'
+'city_frankivsk'
+'city_lviv'
+'city_odesa'
+'city_poltava'
+'city_kharkiv'
+'city_hmelnyck'
+'city_cherkasy'
+
+
+    
 
 
 @router.callback_query(F.data == 'back')

@@ -3,8 +3,6 @@ from parse_func import parser, parser_io
 
 
 
-
-
 # from 0 to 9
 async def all_comments(num):
     soup = await parser('https://baza-gai.com.ua')
@@ -16,3 +14,41 @@ async def all_comments(num):
     number = number.replace(' ', '')
     return out, number
 
+
+
+
+
+async def top_cars_sales():
+    all = (await parser('https://baza-gai.com.ua')).find_all('li', class_="list-item px-1")
+
+    all_cars = []
+    for i in range(50):
+        all_cars.append(all[i].text)
+
+    all_cars_out = []
+    for i in range(50):
+        all_cars_edit = all_cars[i].splitlines()
+
+        all_cars_edit = all_cars_edit[1].strip() + ' ' + all_cars_edit[3].strip()
+
+        out = f'{i+1}: {all_cars_edit}'
+
+        all_cars_out.append(out)
+
+
+    return all_cars_out
+
+
+async def repairs_and_citys():
+    #110 - 136
+    #145 - 171
+    links = (await parser('https://baza-gai.com.ua')).find_all('a')
+    let = 'href'
+    all_citys_link = []
+    all_citys = []
+    for i in range(145, 172):
+        link = f'https://baza-gai.com.ua{links[i][let]}'
+        all_citys_link.append(link)
+        all_citys.append(links[i].text)
+        
+    return all_citys_link, all_citys
