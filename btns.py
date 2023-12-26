@@ -33,7 +33,6 @@ def menu_keyboard_btn():
     return btns
 
 
-
 def inline_user_subscribe_start():
     btn = InlineKeyboardBuilder()
     btn.row(types.InlineKeyboardButton(text='🏎 autopars3', url='https://t.me/autopars3'))
@@ -57,14 +56,12 @@ def inline_menu_btn():
     btn = InlineKeyboardBuilder()
     btn.row(types.InlineKeyboardButton(text='Топ-10 найпопулярніших нових автомобілів у 2023', callback_data='top_car_10'))
     btn.row(types.InlineKeyboardButton(text='🛠 Автосервіси', callback_data='repairs'))
-    btn.row(types.InlineKeyboardButton(text='🔬 INFO', callback_data='info'))
+    # btn.row(types.InlineKeyboardButton(text='🔬 INFO', callback_data='info'))
     btn.row(types.InlineKeyboardButton(text='🍫 Власник', callback_data='owner'))
     btn.row(types.InlineKeyboardButton(text='🗣 Відгуки', callback_data='respons_3'))
     btn.row(types.InlineKeyboardButton(text='👤 Акаунт', callback_data='account'))
 
     return btn.as_markup()
-
-
 
 
 def more_response_btn():
@@ -83,11 +80,9 @@ def top_car_btn():
     return btn.as_markup()
 
 
-
 async def city_repaire_choose_btn():
     
     link, city = (await repairs_and_citys())
-    
     
     btn = InlineKeyboardBuilder()
     btn.row(types.InlineKeyboardButton(text=city[0], callback_data='city_kyiv'))

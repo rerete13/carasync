@@ -2,7 +2,8 @@ from aiogram import Bot
 from aiogram.enums.chat_member_status import ChatMemberStatus
 from tokens import Bot_token
 from data_func import create_user_data
-from btns import menu_keyboard_btn, inline_keyboard_url
+from btns import menu_keyboard_btn, inline_keyboard_url, inline_keyboard_call
+from another_info import get_city_repaire
 
 bot = Bot(Bot_token)
 
@@ -26,3 +27,22 @@ async def check_user_sub_status(msg):
     else:
         await msg.answer("<b>Підпишися на канал:</b>🏎 @autopars3", reply_markup=inline_keyboard_url('🏎 @autopars3', 'https://t.me/autopars3'))
         return False
+    
+    
+    
+async def create_city_repaire_service_call(call, num:int):
+    place, map = (await get_city_repaire(num))
+    
+    out = '' 
+    for i in range(len(place)):
+        x = place[i].split('\n')
+        y = f'<a href="{map[i]}">{x[0]}</a>\n{x[1]}\n<code>{x[2]}</code>\n\n'
+        
+        out += y
+        
+
+    out += '\n\n Інформація надана від: @autoparse_bot'
+    
+    await call.bot.edit_message_text(message_id=call.message.message_id, chat_id=call.message.chat.id, text=out, reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+
+

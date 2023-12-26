@@ -5,9 +5,12 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot_func import is_user_subscribed
 from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
 from data_func import create_user_data
-from another_info import all_comments, top_cars_sales
+from another_info import all_comments, top_cars_sales, get_city_repaire
+from bot_func import create_city_repaire_service_call
 
 router = Router()
+
+
 
 
 @router.callback_query(F.data == 'sub_check')
@@ -19,8 +22,6 @@ async def callback_return(callback: types.callback_query):
         
     else:
         await callback.message.answer("<b>Підпишися на канал:</b>🏎 @autopars3", reply_markup=inline_user_subscribe_start())
-
-
 
 
 
@@ -83,22 +84,61 @@ async def callbacks_num(callback: types.CallbackQuery):
 
 @router.callback_query(F.data == 'repairs')
 async def callback_return(callback: types.callback_query):
-    await callback.message.answer('Виберіть місто', reply_markup= (await city_repaire_choose_btn()))
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='Виберіть місто', reply_markup= (await city_repaire_choose_btn()))
     
 
 
+@router.callback_query(F.data.startswith("city_"))
+async def callbacks_num(callback: types.CallbackQuery):
+    action = callback.data.split("_")[1]
 
-'city_kyiv'
-'city_kyivob'
-'city_vinnycia'
-'city_dnipro'
-'city_frankivsk'
-'city_lviv'
-'city_odesa'
-'city_poltava'
-'city_kharkiv'
-'city_hmelnyck'
-'city_cherkasy'
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
+    
+    if action == 'kyiv':
+        await create_city_repaire_service_call(callback, 0)
+        
+    if action == 'kyivob':
+        await create_city_repaire_service_call(callback, 1)
+        
+    if action == 'vinnycia':
+        await create_city_repaire_service_call(callback, 2)
+        
+    if action == 'dnipro':
+        await create_city_repaire_service_call(callback, 4)
+        
+    if action == 'frankivsk':
+        await create_city_repaire_service_call(callback, 10)
+         
+    if action == 'lviv':
+        await create_city_repaire_service_call(callback, 13)
+                
+    if action == 'odesa':
+        await create_city_repaire_service_call(callback, 15)
+        
+    if action == 'poltava':
+        await create_city_repaire_service_call(callback, 16)
+        
+    if action == 'kharkiv':
+        await create_city_repaire_service_call(callback, 21)
+        
+    if action == 'hmelnyck':
+        await create_city_repaire_service_call(callback, 23)
+        
+    if action == 'cherkasy':
+        await create_city_repaire_service_call(callback, 24)
+        
+        
+
+@router.callback_query(F.data == 'info')
+async def callback_return(callback: types.callback_query):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='info', reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+    
+    
+@router.callback_query(F.data == 'info')
+async def callback_return(callback: types.callback_query):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='info', reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+    
+    
 
 
     
