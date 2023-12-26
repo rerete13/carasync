@@ -11,8 +11,6 @@ from bot_func import create_city_repaire_service_call
 router = Router()
 
 
-
-
 @router.callback_query(F.data == 'sub_check')
 async def callback_return(callback: types.callback_query):
     if await is_user_subscribed(callback.message) == True:
@@ -134,9 +132,17 @@ async def callback_return(callback: types.callback_query):
     await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='info', reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
     
     
-@router.callback_query(F.data == 'info')
+    
+@router.callback_query(F.data == 'owner')
 async def callback_return(callback: types.callback_query):
-    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='info', reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text="<b>Bласник:</b> @rerete13\n\nНа їжу:\n<code>4441111132314539</code> \n\n<b>USDT (TRC20)</b> \n<code>TVSrox5rnjdK7Y2WL4dji3qyfb9yGb616f</code> \n\n <b>BTC (BTC)</b> \n<code>bc1qsmy29mvt4gmfuex8xscalvnu5vfg6hjaf796ph</code>", reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+
+    
+    
+@router.callback_query(F.data == 'y')
+async def callback_return(callback: types.callback_query):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text="y", reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+
     
     
 

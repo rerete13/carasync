@@ -6,8 +6,7 @@ import aiohttp
 async def parser(link:str):
     headers = {'User-Agent': fu.FakeUserAgent().random}
 
-    url = link
-    req = r.get(url, headers=headers)
+    req = r.get(link, headers=headers)
     html = bs(req.content, 'lxml')
 
     return html
@@ -40,3 +39,14 @@ async def car_plates_parser(num:str):
 
     return html
 
+
+
+
+async def plates_mania_parser(num:str):
+    headers = {'User-Agent': fu.FakeUserAgent().random}
+
+    url = f'https://platesmania.com/ua/gallery.php?fastsearch={num}'
+    req = r.get(url, headers=headers)
+    html = bs(req.content, 'lxml')
+
+    return html
