@@ -33,7 +33,7 @@ async def creat_info(num: str):
         img = base_object.find_all('img', class_="card-img plate-model-card__img")
         img = img[0]['src']
         img = f'https://baza-gai.com.ua{img}'
-        img  = re.sub(r"\s", "", img)
+        # img  = re.sub(r"\s", "", img)
         
         
     except:
