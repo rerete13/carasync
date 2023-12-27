@@ -41,17 +41,6 @@ def inline_user_subscribe_start():
     return btn.as_markup()
 
 
-def languige_choose_btn():
-    btn = InlineKeyboardBuilder()
-    btn.row(types.InlineKeyboardButton(text='🇺🇦', callback_data='lan_ua'))
-    btn.row(types.InlineKeyboardButton(text='🇷🇺', callback_data='lan_ru'))
-    btn.row(types.InlineKeyboardButton(text='🇬🇧', callback_data='lan_en'))
-    
-    return btn.as_markup()
-
-
-
-
 def inline_menu_btn():
     btn = InlineKeyboardBuilder()
     btn.row(types.InlineKeyboardButton(text='Топ-10 найпопулярніших нових автомобілів у 2023', callback_data='top_car_10'))
@@ -100,12 +89,5 @@ async def city_repaire_choose_btn():
     
     return btn.as_markup()
 
-
-def inline_vincode_btn(vin):
-    
-    btn = InlineKeyboardBuilder()
-    btn.row(vincode(vin))
-    
-    return btn.as_markup()
 
 

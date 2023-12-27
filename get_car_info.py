@@ -147,6 +147,7 @@ async def process_number(bot, message, number, delete):
         await message.answer(f'{car_info[1]} <code>{number}</code>\n{car_info[0]}\n{car_info[3]} \n{car_info[2]}\n{car_info[4]}\n\n Інформація надана від: @autoparse_bot')
         await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
         await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
+        await message.answer(f'Коментарі ', reply_markup=inline_keyboard_call(text='Знайти коментарі', call=f'c_{number}'))
 
         return True
     
@@ -161,6 +162,7 @@ async def process_number(bot, message, number, delete):
             await bot.delete_message(message_id=delete.message_id, chat_id=message.chat.id)
             await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
             await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
+            await message.answer(f'Коментарі ', reply_markup=inline_keyboard_call(text='Знайти коментарі', call=f'c_{number}'))
             return True
         
         else:
@@ -168,9 +170,40 @@ async def process_number(bot, message, number, delete):
             await message.answer(f'{car_info[1]} <code>{number}</code>\n{car_info[0]}\n{car_info[3]} \n{car_info[2]}\n{car_info[4]}\n\n Інформація надана від: @autoparse_bot')
             await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
             await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
+            await message.answer(f'Коментарі ', reply_markup=inline_keyboard_call(text='Знайти коментарі', call=f'c_{number}'))
             return True
             
         
+async def get_comment_number_bazagai(num:str):
+    link = f'https://baza-gai.com.ua/nomer/{num}'
+    main_data = (await parser(link))
+    comments_data = main_data.find_all('div', class_='plate-comments mb-5')[0]
     
+    autor_arr = []
+    comment_arr = []
+    date_arr = []
+    res_arr = []
+    
+    autors = comments_data.find_all('b')
+    comments = comments_data.find_all('div', class_='plate-comments__text')
+    dates = comments_data.find_all('span', class_='plate-comments__date')
+    
+    for i in autors:
+        autor_arr.append(i.text)
+
+    for i in comments:
+        comment_arr.append(i.text)
+
+    for i in dates:
+        i = i.text
+        i = i.strip()
+        date_arr.append(i)
+
+    for i in range(len(autor_arr)):
+        item = (autor_arr[i], comment_arr[i], date_arr[i])
+        res_arr.append(item)
+        
+    
+    return res_arr
     
     

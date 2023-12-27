@@ -5,9 +5,9 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot_func import is_user_subscribed
 from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
 from data_func import create_user_data
-from another_info import all_comments, top_cars_sales, get_city_repaire
+from another_info import all_comments, top_cars_sales
 from bot_func import create_city_repaire_service_call
-import json 
+from get_car_info import get_comment_number_bazagai
 
 
 router = Router()
@@ -162,5 +162,24 @@ async def callback_return(callback: types.callback_query):
         
     
 
-
+    
+@router.callback_query(F.data.startswith("c_"))
+async def callback_return(callback: types.callback_query):
+    callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
+    action = callback.data.split("_")[1]
+    
+    try:
+        comments = await get_comment_number_bazagai(action)
+        comments_sorted = ''
+        
+        for i in comments:
+            comment = f'\n<b>Автор:</b> {i[0]}\n<b>Коментар:</b>\n{i[1]}\n<b>Дата публікації:</b> \n{i[2]}\n'
+            comments_sorted += comment
+            
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Коментарії до автомобільного номера: \n\n<code>{action}</code>\n{comments_sorted}\n\n Інформація надана від: @autoparse_bot')
+    
+    except:
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Коментарії до автомобільного номера: \n\n<code>{action}</code>\n\n <b>Не знайдено</b>')
+            
+    
     

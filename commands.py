@@ -14,9 +14,7 @@ async def start(msg: Message):
         return False
     else:
         await msg.answer("<b>Введіть номер у такій формі:</b> AA7777AA", reply_markup=menu_keyboard_btn())
-
-    
-    
+ 
 
 @router.message(Command('info'))
 async def start(msg: Message):
@@ -24,8 +22,6 @@ async def start(msg: Message):
     await msg.answer("<b>Bласник:</b> @rerete13\n\nНа їжу:\n<code>4441111132314539</code> \n\n<b>USDT (TRC20)</b> \n<code>TVSrox5rnjdK7Y2WL4dji3qyfb9yGb616f</code> \n\n <b>BTC (BTC)</b> \n<code>bc1qsmy29mvt4gmfuex8xscalvnu5vfg6hjaf796ph</code>")
     
     
-    
-
     
 @router.message(Command('test'))
 async def start(msg: Message):
