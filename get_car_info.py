@@ -2,7 +2,9 @@ from parse_func import car_plates_parser, get_vincode
 import re
 from func import change_symbols, cleaning
 from parse_func import parser, plates_mania_parser
-from aiogram import Bot
+from btns import inline_keyboard_call
+
+
 
 
 async def creat_info(num: str):
@@ -115,7 +117,6 @@ async def get_ukr_img(links):
     return arr_ukr_img
 
 
-
 async def process_number(bot, message, number, delete):
     try:
         number = (await change_symbols(number))
@@ -145,6 +146,8 @@ async def process_number(bot, message, number, delete):
         await bot.delete_message(message_id=delete.message_id, chat_id=message.chat.id)
         await message.answer(f'{car_info[1]} <code>{number}</code>\n{car_info[0]}\n{car_info[3]} \n{car_info[2]}\n{car_info[4]}\n\n Інформація надана від: @autoparse_bot')
         await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
+        await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
+
         return True
     
     else:
@@ -157,12 +160,14 @@ async def process_number(bot, message, number, delete):
                 
             await bot.delete_message(message_id=delete.message_id, chat_id=message.chat.id)
             await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
+            await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
             return True
         
         else:
             await bot.delete_message(message_id=delete.message_id, chat_id=message.chat.id)
             await message.answer(f'{car_info[1]} <code>{number}</code>\n{car_info[0]}\n{car_info[3]} \n{car_info[2]}\n{car_info[4]}\n\n Інформація надана від: @autoparse_bot')
             await message.answer(f'Бажаєте найти більше інформації про номер?:\n\n<code>{number}</code>')
+            await message.answer(f'Vincode ', reply_markup=inline_keyboard_call(text='Знайти vincode', call=f'v_{car_info[6]}'))
             return True
             
         

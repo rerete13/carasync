@@ -2,7 +2,7 @@ from aiogram import types, F
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from another_info import repairs_and_citys
-
+import json
 
 
 def back():
@@ -99,4 +99,13 @@ async def city_repaire_choose_btn():
     btn.row(back())
     
     return btn.as_markup()
+
+
+def inline_vincode_btn(vin):
+    
+    btn = InlineKeyboardBuilder()
+    btn.row(vincode(vin))
+    
+    return btn.as_markup()
+
 

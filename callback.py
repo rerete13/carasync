@@ -7,8 +7,18 @@ from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn
 from data_func import create_user_data
 from another_info import all_comments, top_cars_sales, get_city_repaire
 from bot_func import create_city_repaire_service_call
+import json 
+
 
 router = Router()
+
+
+
+
+@router.callback_query(F.data == 'back')
+async def callback_return(callback: types.callback_query):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='Меню', reply_markup=inline_menu_btn())
+
 
 
 @router.callback_query(F.data == 'sub_check')
@@ -139,17 +149,18 @@ async def callback_return(callback: types.callback_query):
 
     
     
-@router.callback_query(F.data == 'y')
+@router.callback_query(F.data.startswith("v_"))
 async def callback_return(callback: types.callback_query):
-    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text="y", reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+    action = callback.data.split("_")[1]
+    
+    if action != 'None':
+        callback.bot.edit_message_text
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f"Vincode: \n<code>{action}</code>\n\n Інформація надана від: @autoparse_bot")
+
+    else:
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Vincode не знайдено')
+        
+    
+
 
     
-    
-
-
-    
-
-
-@router.callback_query(F.data == 'back')
-async def callback_return(callback: types.callback_query):
-    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='Меню', reply_markup=inline_menu_btn())
