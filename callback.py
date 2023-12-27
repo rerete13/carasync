@@ -161,7 +161,6 @@ async def callback_return(callback: types.callback_query):
         await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Vincode не знайдено')
         
     
-
     
 @router.callback_query(F.data.startswith("c_"))
 async def callback_return(callback: types.callback_query):
