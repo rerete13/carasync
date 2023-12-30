@@ -1,7 +1,6 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By as by
-from time import sleep
-
+from asyncio import sleep
 
 
 async def american_car_info(vin:str, chrome:int = 120):
@@ -9,19 +8,19 @@ async def american_car_info(vin:str, chrome:int = 120):
     driver = uc.Chrome(version_main=chrome)
     driver.get('https://bid.cars/ua/search')
 
-    sleep(2)
+    await sleep(2)
 
     enter_login = driver.find_element(by.XPATH, '//*[@id="search_field"]')
     enter_login.clear()
-    sleep(0.1)
+    await sleep(0.1)
     enter_login.send_keys(vin)
 
-    sleep(0.2)
+    await sleep(0.2)
 
     enter = driver.find_element(by.XPATH, '//*[@id="submit_search"]')
     enter.click()
 
-    sleep(7)
+    await sleep(7)
 
     car_info = []
     ditails_info = []
@@ -34,9 +33,9 @@ async def american_car_info(vin:str, chrome:int = 120):
 
     photos = driver.find_element(by.CLASS_NAME, 'gallery-thumbnails')
 
-    sleep(1)
+    await sleep(1)
     photos = photos.find_elements(by.TAG_NAME, 'a')
-    sleep(1)
+    await sleep(1)
 
     photos_link = []
     for i in photos:
