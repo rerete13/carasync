@@ -2,7 +2,7 @@ from aiogram import types, F
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.types import KeyboardButton, ReplyKeyboardMarkup
 from another_info import repairs_and_citys
-import json
+
 
 
 def back():
