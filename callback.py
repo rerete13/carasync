@@ -9,7 +9,8 @@ from another_info import all_comments, top_cars_sales
 from bot_func import create_city_repaire_service_call
 from get_car_info import get_comment_number_bazagai
 from american_info import get_american_car_info
-
+from asyncio import sleep
+from time import sleep as block_sleep
 
 router = Router()
 
@@ -194,6 +195,10 @@ async def callback_return(callback: types.callback_query):
             photos, car_details, car_info = (await get_american_car_info(action))
             
             await callback.bot.delete_message(message_id=wait.message_id, chat_id=callback.message.chat.id)
+            
+            wait = await callback.message.answer('Ваш запит формується')
+            
+            block_sleep(5)
             
             for img in photos:
                 await callback.message.answer_photo(img)

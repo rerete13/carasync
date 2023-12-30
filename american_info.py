@@ -21,7 +21,7 @@ async def get_american_car_info(vin:str, chrome:int = 120):
         enter = driver.find_element(by.XPATH, '//*[@id="submit_search"]')
         enter.click()
 
-        await sleep(7)
+        await sleep(5)
 
         car_info = []
         ditails_info = []
