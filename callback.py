@@ -8,6 +8,7 @@ from data_func import create_user_data
 from another_info import all_comments, top_cars_sales
 from bot_func import create_city_repaire_service_call
 from get_car_info import get_comment_number_bazagai
+from american_info import get_american_car_info
 
 
 router = Router()
@@ -154,8 +155,7 @@ async def callback_return(callback: types.callback_query):
     action = callback.data.split("_")[1]
     
     if action != 'None':
-        callback.bot.edit_message_text
-        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f"Vincode: \n<code>{action}</code>\n\n Інформація надана від: @autoparse_bot")
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f"Vincode: \n<code>{action}</code>\n\n Інформація надана від: @autoparse_bot", reply_markup=inline_keyboard_call(' Пошук по Америці', f'a_{action}'))
 
     else:
         await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Vincode не знайдено')
@@ -182,3 +182,38 @@ async def callback_return(callback: types.callback_query):
             
     
     
+@router.callback_query(F.data.startswith("a_"))
+async def callback_return(callback: types.callback_query):
+    action = callback.data.split("_")[1]
+    if action != 'None':
+        try:
+            await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'{callback.message.text}')
+            
+            wait = await callback.message.answer('⏳ Це може зайняти деякий час...')
+            
+            photos, car_details, car_info = (await get_american_car_info(action))
+            
+            await callback.bot.delete_message(message_id=wait.message_id, chat_id=callback.message.chat.id)
+            
+            for img in photos:
+                await callback.message.answer_photo(img)
+            
+            cd = ''
+            for i in car_details:
+                cd += i + '\n'
+                
+            ci = ''
+            for i in car_info:
+                ci += i + '\n'
+                
+            await callback.message.answer(f'{cd}\n{ci}\n\nІнформація надана від: @autoparse_bot')
+            
+            
+            
+        except:
+            await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+        
+
+    else:
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+        
