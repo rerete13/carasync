@@ -65,6 +65,10 @@ async def get_american_car_info(vin:str, chrome:int = 120):
         
         driver.close()
         driver.quit()
+        
+        # print(photos)
+        # print(ditails_info)
+        # print(car_info)
 
         return photos, ditails_info, car_info
         

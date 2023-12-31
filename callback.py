@@ -165,7 +165,7 @@ async def callback_return(callback: types.callback_query):
     
 @router.callback_query(F.data.startswith("c_"))
 async def callback_return(callback: types.callback_query):
-    callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
     action = callback.data.split("_")[1]
     
     try:
@@ -216,9 +216,9 @@ async def callback_return(callback: types.callback_query):
             
             
         except:
-            await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+            await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
         
 
     else:
-        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+        await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
         
