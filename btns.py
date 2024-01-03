@@ -28,7 +28,7 @@ def menu_keyboard_btn():
         [KeyboardButton(text='Меню')],
     ]
     
-    btns = ReplyKeyboardMarkup(keyboard=btns)
+    btns = ReplyKeyboardMarkup(keyboard=btns, resize_keyboard=True)
     
     return btns
 
