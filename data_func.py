@@ -73,7 +73,8 @@ async def add_user_data(path, data_update_path:str, new_data, data_update_path_i
         json.dump(data, f, indent=4, ensure_ascii=False)
 
 
-def get_info_about(user:str, data_id, data_id_in=None):
+
+async def get_info_about(user:str, data_id, data_id_in=None):
     with open(f"{user}.json", "r") as f:
         data = json.load(f)
         
@@ -86,7 +87,7 @@ def get_info_about(user:str, data_id, data_id_in=None):
         
         
         
-def change_user_data(path:str, data_update_path:str, new_data, data_update_path_in:str == None):
+async def change_user_data(path:str, data_update_path:str, new_data, data_update_path_in:str == None):
     with open(f"{path}.json", "r") as f:
         data = json.load(f)
 

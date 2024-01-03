@@ -1,9 +1,11 @@
 from aiogram import Bot
 from aiogram.enums.chat_member_status import ChatMemberStatus
 from tokens import Bot_token
-from data_func import create_user_data
+from data_func import create_user_data, get_info_about
 from btns import menu_keyboard_btn, inline_keyboard_url, inline_keyboard_call
 from another_info import get_city_repaire
+import datetime
+import json
 
 bot = Bot(Bot_token)
 
@@ -46,3 +48,19 @@ async def create_city_repaire_service_call(call, num:int):
     await call.bot.edit_message_text(message_id=call.message.message_id, chat_id=call.message.chat.id, text=out, reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
 
 
+async def get_count_days(id):
+
+    id = str(id)
+
+
+    now = datetime.datetime.now()
+    now = str(now.strftime("%d-%m-%Y %H:%M:%S"))
+
+    get_time = (await get_info_about(f'user-data/{id}', 'info', 'bot-start'))
+
+    now = datetime.datetime.strptime(now, '%d-%m-%Y %H:%M:%S')
+    time_obj = datetime.datetime.strptime(get_time, '%d-%m-%Y %H:%M:%S')
+
+    res = now - time_obj
+
+    return res

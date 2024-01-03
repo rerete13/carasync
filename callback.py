@@ -4,13 +4,14 @@ from aiogram.types import Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot_func import is_user_subscribed
 from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
-from data_func import create_user_data
+from data_func import create_user_data, get_info_about
 from another_info import all_comments, top_cars_sales
-from bot_func import create_city_repaire_service_call
+from bot_func import create_city_repaire_service_call, get_count_days
 from get_car_info import get_comment_number_bazagai
 from american_info import get_american_car_info
 from asyncio import sleep
 from time import sleep as block_sleep
+
 
 router = Router()
 
@@ -222,3 +223,37 @@ async def callback_return(callback: types.callback_query):
     else:
         await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
         
+        
+        
+@router.callback_query(F.data == 'account')
+async def callback_return(callback: types.callback_query):
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
+    
+    id = str(callback.message.chat.id)
+    days = (await get_count_days(id))
+    languige = (await get_info_about(f'user-data/{id}', 'info', 'language'))
+    findings_count = (await get_info_about(f'user-data/{id}', 'findings', None))
+    findings_count = len(findings_count)
+    count_premium_requests = (await get_info_about(f'user-data/{id}', 'subscribe', 'count'))
+    sub_date = (await get_info_about(f'user-data/{id}', 'subscribe', 'count'))
+    status = (await get_info_about(f'user-data/{id}', 'subscribe', 'status'))
+    lotery_tikets = (await get_info_about(f'user-data/{id}', 'info', 'try-to-win'))
+    
+    
+    text = f"""
+👤 Мій акаунт: {id} \n\n
+📝 Мова: {languige} \n
+⏳ Вік облікового запису: {days}  \n
+🔗 Кількість запитів: {findings_count} \n\n
+🎰 Квитків: {lotery_tikets} \n
+💸 Преміум запити: {count_premium_requests} \n
+🔑 Залишок преміум підписки: {sub_date} \n
+📇 Статус: {status}
+"""
+    
+    await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=text, reply_markup=inline_keyboard_call(text='Назад ⭕️', call='back'))
+
+
+
+
+
