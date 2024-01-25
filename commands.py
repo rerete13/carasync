@@ -4,7 +4,7 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from bot_func import check_user_sub_status
 from btns import inline_keyboard_url, menu_keyboard_btn
-from data_func import add_user_data_mongo, change_user_data_mongo
+
 
 router = Router()
 
@@ -13,7 +13,6 @@ async def start(msg: Message):
     if await check_user_sub_status(msg) == False:
         return False
     else:
-        await change_user_data_mongo(msg.from_user.id)
         await msg.answer("<b>Введіть номер у такій формі:</b> AA7777AA", reply_markup=menu_keyboard_btn())
         
  
@@ -25,9 +24,9 @@ async def start(msg: Message):
     
     
     
-@router.message(Command('test'))
-async def start(msg: Message):
-    await msg.answer(str(msg))
+# @router.message(Command('test'))
+# async def start(msg: Message):
+#     await msg.answer(str(msg))
     
     
     

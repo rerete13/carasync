@@ -1,9 +1,9 @@
 from aiogram import types, Router, types, F
 from bot_func import is_user_subscribed
 from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
-from data_func import create_user_data, get_info_about, create_user_data_mongo
+from data_func import create_user_data_mongo, get_info_about_mongo
 from another_info import all_comments, top_cars_sales
-from bot_func import create_city_repaire_service_call, get_count_days
+from bot_func import create_city_repaire_service_call, get_count_days_mongo
 from get_car_info import get_comment_number_bazagai
 from american_info import get_american_car_info
 from asyncio import sleep
@@ -228,15 +228,15 @@ async def callback_return(callback: types.callback_query):
 async def callback_return(callback: types.callback_query):
     await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text='⏳ Це може зайняти деякий час...')
     
-    id = str(callback.message.chat.id)
-    days = (await get_count_days(id))
-    languige = (await get_info_about(f'user-data/{id}', 'info', 'language'))
-    findings_count = (await get_info_about(f'user-data/{id}', 'findings', None))
+    id = int(callback.message.chat.id)
+    days = (await get_count_days_mongo(id))
+    languige = (await get_info_about_mongo(id, 'info', 'language'))
+    findings_count = (await get_info_about_mongo(id, 'findings', None))
     findings_count = len(findings_count)
-    count_premium_requests = (await get_info_about(f'user-data/{id}', 'subscribe', 'count'))
-    sub_date = (await get_info_about(f'user-data/{id}', 'subscribe', 'count'))
-    status = (await get_info_about(f'user-data/{id}', 'subscribe', 'status'))
-    lotery_tikets = (await get_info_about(f'user-data/{id}', 'info', 'try-to-win'))
+    count_premium_requests = (await get_info_about_mongo(id, 'subscribe', 'count'))
+    sub_date = (await get_info_about_mongo(id, 'subscribe', 'count'))
+    status = (await get_info_about_mongo(id, 'subscribe', 'status'))
+    lotery_tikets = (await get_info_about_mongo(id, 'info', 'try-to-win'))
     
     
     text = f"""

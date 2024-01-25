@@ -5,7 +5,7 @@ from data_func import create_user_data, get_info_about, create_user_data_mongo, 
 from btns import menu_keyboard_btn, inline_keyboard_url, inline_keyboard_call
 from another_info import get_city_repaire
 import datetime
-import json
+
 
 bot = Bot(Bot_token)
 
@@ -23,7 +23,6 @@ async def is_user_subscribed(message):
 async def check_user_sub_status(msg):
     if await is_user_subscribed(msg) == True:
         
-        await create_user_data(msg, 'user-data')
         await create_user_data_mongo(msg)
         return True
         
