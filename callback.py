@@ -1,16 +1,14 @@
 from aiogram import types, Router, types, F
-from aiogram.filters import CommandStart, Command
-from aiogram.types import Message
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 from bot_func import is_user_subscribed
 from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
-from data_func import create_user_data, get_info_about
+from data_func import create_user_data, get_info_about, create_user_data_mongo
 from another_info import all_comments, top_cars_sales
 from bot_func import create_city_repaire_service_call, get_count_days
 from get_car_info import get_comment_number_bazagai
 from american_info import get_american_car_info
 from asyncio import sleep
 from time import sleep as block_sleep
+from aiogram.types import LabeledPrice
 
 
 router = Router()
@@ -28,7 +26,8 @@ async def callback_return(callback: types.callback_query):
 async def callback_return(callback: types.callback_query):
     if await is_user_subscribed(callback.message) == True:
         await callback.bot.delete_message(message_id=callback.message.message_id, chat_id=callback.message.chat.id)
-        await create_user_data(callback.message, 'user-data')
+        # await create_user_data(callback.message, 'user-data')
+        await create_user_data_mongo(callback.message)
         await callback.message.answer("<b>Введіть номер у такій формі:</b> AA7777AA", reply_markup=menu_keyboard_btn())
         
     else:

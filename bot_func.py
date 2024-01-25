@@ -1,7 +1,7 @@
 from aiogram import Bot
 from aiogram.enums.chat_member_status import ChatMemberStatus
 from tokens import Bot_token
-from data_func import create_user_data, get_info_about
+from data_func import create_user_data, get_info_about, create_user_data_mongo, get_info_about_mongo
 from btns import menu_keyboard_btn, inline_keyboard_url, inline_keyboard_call
 from another_info import get_city_repaire
 import datetime
@@ -20,16 +20,16 @@ async def is_user_subscribed(message):
         return False
 
 
-
 async def check_user_sub_status(msg):
     if await is_user_subscribed(msg) == True:
+        
         await create_user_data(msg, 'user-data')
+        await create_user_data_mongo(msg)
         return True
         
     else:
         await msg.answer("<b>Підпишися на канал:</b>🏎 @autopars3", reply_markup=inline_keyboard_url('🏎 @autopars3', 'https://t.me/autopars3'))
         return False
-    
     
     
 async def create_city_repaire_service_call(call, num:int):
@@ -64,3 +64,17 @@ async def get_count_days(id):
     res = now - time_obj
 
     return res
+
+
+async def get_count_days_mongo(id:int):
+    get_time = await get_info_about_mongo(id, "info", "bot-start")
+    now = datetime.datetime.now()
+    now = str(now.strftime("%d-%m-%Y %H:%M:%S"))
+    
+    now = datetime.datetime.strptime(now, '%d-%m-%Y %H:%M:%S')
+    time_obj = datetime.datetime.strptime(get_time, '%d-%m-%Y %H:%M:%S')
+
+    res = now - time_obj
+
+    return res
+    

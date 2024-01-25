@@ -6,7 +6,7 @@ from asyncio import sleep
 async def get_american_car_info(vin:str, chrome:int = 120):
 
     try:   
-        driver = uc.Chrome(version_main=chrome)
+        driver = uc.Chrome(version_main=chrome, headless=True)
         driver.get('https://bid.cars/ua/search')
 
         await sleep(2)
