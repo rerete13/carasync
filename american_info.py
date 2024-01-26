@@ -1,89 +1,69 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By as by
+import fake_useragent as fake
 from asyncio import sleep
 
 
-async def get_american_car_info(vin:str, chrome:int = 120):
+
+async def get_american_car_info(vin:str):
 
     try:   
-        driver = uc.Chrome(version_main=chrome, headless=True)
+        
+        driver = uc.Chrome(version_main=121, headless=True)
+        
         driver.get('https://bid.cars/ua/search')
 
-        await sleep(2)
+        await sleep(3)
 
         enter_login = driver.find_element(by.XPATH, '//*[@id="search_field"]')
         enter_login.clear()
-        await sleep(0.1)
+        await sleep(0.5)
         enter_login.send_keys(vin)
 
-        await sleep(0.2)
+        await sleep(0.3)
 
         enter = driver.find_element(by.XPATH, '//*[@id="submit_search"]')
         enter.click()
 
-        await sleep(5)
+        await sleep(3)
 
-        car_info = []
-        ditails_info = []
-        for i in range(1, 7):
-            d_info = driver.find_element(by.XPATH, f'/html/body/section[1]/div/div[5]/div[1]/div/div/div/div/div[3]/div[2]/div[{i}]/span')
-            c_info = driver.find_element(by.XPATH, f'/html/body/section[1]/div/div[5]/div[1]/div/div/div/div/div[4]/div[2]/div[{i}]/span')
-            ditails_info.append(d_info.text)
-            car_info.append(c_info.text)
+        photos = driver.find_element(by.ID, 'galleryThumbs')
+        elements = driver.find_elements(by.CLASS_NAME, 'options-list')
+        
+        await sleep(6)
+        
+        
+        photos = photos.find_elements(by.TAG_NAME, 'img')
+        car_info = elements[0].text.split('\n')
+        ditails_info = elements[1].text.split('\n')
+        
+        await sleep(3)
 
-
-        photos = driver.find_element(by.CLASS_NAME, 'gallery-thumbnails')
-
-        await sleep(1)
-        photos = photos.find_elements(by.TAG_NAME, 'a')
-        await sleep(1)
-
-        photos_link = []
+        photo = []
         for i in photos:
-            try:
-                photos_link.append(i.get_dom_attribute('style'))
-                
-            except:
-                pass
-
-
-        photos = []
-        for i in photos_link:
-            x = False
-            link = ''
-            for j in i:
-                if (j == "'" or x == 1) and j != ')':
-                    x = True
-                    if j == "'":
-                        continue
-                    else:
-                        link += j
-                    
-            photos.append(link)
+            photo.append(i.get_dom_attribute('src'))
             
-        driver.save_screenshot('debug_show.png')
+        
+        # print(car_info)
+        # print('---------------------------------------')
+        # print(ditails_info)
+        # print('---------------------------------------')
+        # print(photo)
+
+
+        
         
         driver.close()
         driver.quit()
         
-        # print(photos)
+        # print(photo)
         # print(ditails_info)
         # print(car_info)
 
-        return photos, ditails_info, car_info
+        return photo, ditails_info, car_info
         
     except:
         driver.close()
         driver.quit()
 
         return None, None, None
-    
-
-
-
-
-
-
-
-
-

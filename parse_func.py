@@ -1,10 +1,10 @@
 import requests as r
 from bs4 import BeautifulSoup as bs
-import fake_useragent as fu
+import fake_useragent as fake
 import aiohttp
 
 async def parser(link:str):
-    headers = {'User-Agent': fu.FakeUserAgent().random}
+    headers = {'User-Agent': fake.FakeUserAgent().random}
 
     req = r.get(link, headers=headers)
     html = bs(req.content, 'lxml')
@@ -14,7 +14,7 @@ async def parser(link:str):
 
 
 async def parser_io(url):
-    headers = {'User-Agent': fu.FakeUserAgent().random}
+    headers = {'User-Agent': fake.FakeUserAgent().random}
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             html = await response.text()
@@ -31,7 +31,7 @@ async def get_vincode(base_object):
     
 
 async def car_plates_parser(num:str):
-    headers = {'User-Agent': fu.FakeUserAgent().random}
+    headers = {'User-Agent': fake.FakeUserAgent().random}
 
     url = f'https://baza-gai.com.ua/nomer/{num}'
     req = r.get(url, headers=headers)
@@ -43,7 +43,7 @@ async def car_plates_parser(num:str):
 
 
 async def plates_mania_parser(num:str):
-    headers = {'User-Agent': fu.FakeUserAgent().random}
+    headers = {'User-Agent': fake.FakeUserAgent().random}
 
     url = f'https://platesmania.com/ua/gallery.php?fastsearch={num}'
     req = r.get(url, headers=headers)
