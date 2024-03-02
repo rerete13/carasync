@@ -1,6 +1,6 @@
 from aiogram import types, Router, types, F
 from bot_func import is_user_subscribed
-from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn
+from btns import menu_keyboard_btn, inline_user_subscribe_start, inline_menu_btn, inline_keyboard_call, more_response_btn, top_car_btn, city_repaire_choose_btn, inline_keyboard_url
 from data_func import create_user_data_mongo, get_info_about_mongo
 from another_info import all_comments, top_cars_sales
 from bot_func import create_city_repaire_service_call, get_count_days_mongo
@@ -187,40 +187,43 @@ async def callback_return(callback: types.callback_query):
 async def callback_return(callback: types.callback_query):
     action = callback.data.split("_")[1]
     if action != 'None':
-        try:
-            await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'{callback.message.text}')
+        
+        await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'<code>{action}</code>\n Cкопіюйте та перейдіть за посиланням\n\n Інформація надана від: @autoparse_bot', reply_markup=inline_keyboard_url('Перейти ✈️', 'https://shre.su/0YEO'))
+        
+    #     try:
+    #         await callback.bot.edit_message_text(message_id=callback.message.message_id, chat_id=callback.message.chat.id, text=f'{callback.message.text}')
             
-            wait = await callback.message.answer('⏳ Це може зайняти деякий час...')
+    #         wait = await callback.message.answer('⏳ Це може зайняти деякий час...')
             
-            photos, car_details, car_info = (await get_american_car_info(action))
+    #         photos, car_details, car_info = (await get_american_car_info(action))
             
-            await callback.bot.delete_message(message_id=wait.message_id, chat_id=callback.message.chat.id)
+    #         await callback.bot.delete_message(message_id=wait.message_id, chat_id=callback.message.chat.id)
             
-            wait = await callback.message.answer('Ваш запит формується')
+    #         wait = await callback.message.answer('Ваш запит формується')
             
-            block_sleep(5)
+    #         block_sleep(5)
             
-            for img in photos:
-                await callback.message.answer_photo(img)
+    #         for img in photos:
+    #             await callback.message.answer_photo(img)
             
-            cd = ''
-            for i in car_details:
-                cd += i + '\n'
+    #         cd = ''
+    #         for i in car_details:
+    #             cd += i + '\n'
                 
-            ci = ''
-            for i in car_info:
-                ci += i + '\n'
+    #         ci = ''
+    #         for i in car_info:
+    #             ci += i + '\n'
                 
-            await callback.message.answer(f'{cd}\n{ci}\n\nІнформація надана від: @autoparse_bot')
+    #         await callback.message.answer(f'{cd}\n{ci}\n\nІнформація надана від: @autoparse_bot')
             
             
             
-        except:
-            await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+    #     except:
+    #         await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
         
 
-    else:
-        await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
+    # else:
+    #     await callback.bot.edit_message_text(message_id=wait.message_id, chat_id=callback.message.chat.id, text=f'Mашини з vincode: {action}\n не найдено по американських базах даних')
         
         
         
